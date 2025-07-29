@@ -7,11 +7,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>Preview</LangVersion>
         <UseWPF>true</UseWPF>
-        <Platforms>x86</Platforms>
-        <PlatformTarget>x86</PlatformTarget>
+        <Platform>x64</Platform>
+        <PlatformTarget>x64</PlatformTarget>
+
         <UseAppHost>true</UseAppHost>
         <SelfContained>true</SelfContained> <!-- Optional but usually needed -->
-        <RuntimeIdentifier>win-x86</RuntimeIdentifier> <!-- Important for self-contained or apphost issues -->
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <Configurations>Release;Debug</Configurations>
+        <Platforms>AnyCPU;x64</Platforms> <!-- Important for self-contained or apphost issues -->
 
     </PropertyGroup>
 
@@ -20,6 +23,7 @@
       <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
       <PackageReference Include="Microsoft.NETCore.DotNetAppHost" Version="9.0.7" />
+      <PackageReference Include="ScreenRecorderLib" Version="6.5.1" />
       <PackageReference Include="Serilog" Version="4.3.0" />
       <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />

@@ -2,12 +2,14 @@
 using CommunityToolkit.Mvvm.Input;
 using Serilog;
 using Serilog.Core;
+using WpfRecorder.Services;
 
 namespace WpfRecorder.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
     private readonly ILogger _logger = Log.ForContext<MainWindowViewModel>();
+    private readonly RecorderWrapper _recorder = new();
 
     [ObservableProperty] public partial bool IsStartButtonEnabled { get; set; } = true;
     [ObservableProperty] public partial bool IsPauseButtonEnabled { get; set; } = false;
@@ -22,6 +24,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task StartRecording()
     {
+        _recorder.CreateRecording();
         _logger.Information("Start recording");
         IsStartButtonEnabled = false;
         IsResumeButtonEnabled = false;
@@ -34,6 +37,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task PauseRecording()
     {
+        _recorder.PauseRecording();
         _logger.Information("Pause recording");
         IsResumeButtonEnabled = true;
         IsStartButtonEnabled = false;
@@ -45,6 +49,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ResumeRecording()
     {
+        _recorder.ResumeRecording();
         _logger.Information("Resume recording");
         IsSaveButtonEnabled = true;
         IsResumeButtonEnabled = false;
@@ -55,6 +60,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task SaveRecording()
     {
+        await _recorder.EndRecordingAsync();
         _logger.Information("Save recording");
         IsStartButtonEnabled = true;
         IsResumeButtonEnabled = false;
