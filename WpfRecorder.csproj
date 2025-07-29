@@ -7,6 +7,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>Preview</LangVersion>
         <UseWPF>true</UseWPF>
+        <Platforms>x86</Platforms>
+        <PlatformTarget>x86</PlatformTarget>
+        <UseAppHost>true</UseAppHost>
+        <SelfContained>true</SelfContained> <!-- Optional but usually needed -->
+        <RuntimeIdentifier>win-x86</RuntimeIdentifier> <!-- Important for self-contained or apphost issues -->
+
     </PropertyGroup>
 
     <ItemGroup>
