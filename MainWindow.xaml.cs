@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfRecorder.ViewModels;
 
 namespace WpfRecorder;
 
@@ -16,8 +17,11 @@ namespace WpfRecorder;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private MainWindowViewModel _viewModel = new();
+    
     public MainWindow()
     {
         InitializeComponent();
+        DataContext = _viewModel;
     }
 }
