@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         Icon="pack://application:,,,/Assets/app.ico"
-        Title="Recorder" Height="100" Width="500"
+        Title="Recorder" Height="120" Width="520"
         Background="{DynamicResource MaterialDesignPaper}">
 
     <Window.Resources>
@@ -25,35 +25,45 @@
 
     <Border Background="LightGray">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button Style="{StaticResource MyButtonStyle}" Command="{Binding StartRecordingCommand}"  >
+        <Button Style="{StaticResource MyButtonStyle}" 
+                Command="{Binding StartRecordingCommand}"
+                IsEnabled="{Binding IsStartButtonEnabled}">
             <Viewbox Stretch="Uniform">
                 <Image Width="26" Height="26"
                        ToolTip="Start Recording"
                        Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/play_arrow.svg'}"/>
             </Viewbox>
         </Button>
-        <Button Style="{StaticResource MyButtonStyle}" Command="{Binding PauseRecordingCommand}" >
+        <Button Style="{StaticResource MyButtonStyle}" 
+                Command="{Binding PauseRecordingCommand}"
+                IsEnabled="{Binding IsPauseButtonEnabled}">
             <Viewbox Stretch="Uniform">
                 <Image Width="26" Height="26"
                        ToolTip="Pause Recording"
                        Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/pause_circle.svg'}"/>
             </Viewbox>
         </Button>
-        <Button Style="{StaticResource MyButtonStyle}" Command="{Binding ResumeRecordingCommand}">
+        <Button Style="{StaticResource MyButtonStyle}" 
+                Command="{Binding ResumeRecordingCommand}"
+                IsEnabled="{Binding IsResumeButtonEnabled}">
             <Viewbox Stretch="Uniform">
                 <Image Width="26" Height="26"
                        ToolTip="Resume Recording"
                        Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/resume.svg'}"/>
             </Viewbox>
         </Button>
-        <Button Style="{StaticResource MyButtonStyle}" Command="{Binding SaveRecordingCommand}">
+        <Button Style="{StaticResource MyButtonStyle}" 
+                Command="{Binding SaveRecordingCommand}"
+                IsEnabled="{Binding IsSaveButtonEnabled}">
             <Viewbox Stretch="Uniform">
                 <Image Width="26" Height="26"
                        ToolTip="End and save Recording"
                        Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/stop_circle.svg'}"/>
             </Viewbox>
         </Button>
-        <Button Style="{StaticResource MyButtonStyle}" Command="{Binding CancelRecordingCommand}" >
+        <Button Style="{StaticResource MyButtonStyle}" 
+                Command="{Binding CancelRecordingCommand}"
+                IsEnabled="{Binding IsCancelButtonEnabled}">
             <Viewbox Stretch="Uniform">
                 <Image Width="26" Height="26"
                        ToolTip="Cancel Recording"

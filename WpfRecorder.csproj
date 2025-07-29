@@ -5,6 +5,7 @@
         <TargetFramework>net9.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>Preview</LangVersion>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
