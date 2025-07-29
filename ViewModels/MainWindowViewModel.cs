@@ -16,6 +16,9 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] public partial bool IsCancelButtonEnabled { get; set; } = false;
 
     
+    [ObservableProperty] public partial bool IsHelpVisible { get; set; } = false;
+
+    
     [RelayCommand]
     private async Task StartRecording()
     {
