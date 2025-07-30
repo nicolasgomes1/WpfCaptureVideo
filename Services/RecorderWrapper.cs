@@ -12,12 +12,9 @@ public class RecorderWrapper : IDisposable
     private Recorder _rec = null!;
     private RecorderStatus _status = RecorderStatus.Idle;
 
-    private string VideoOptions()
+    private string VideoOptions(string videoPath)
     {
-        var currentDate = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-        
-        string videoPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"Recorder_{currentDate}.mp4");
-        _logger.Information("Recording to: {videoPath}", videoPath);
+
         var options = new RecorderOptions
         {
             VideoEncoderOptions = new VideoEncoderOptions
@@ -45,11 +42,11 @@ public class RecorderWrapper : IDisposable
         return videoPath;
     }
 
-    public void CreateRecording()
+    public void CreateRecording(string videoPath)
     {
         try
         {
-            var videoPath = VideoOptions();
+            VideoOptions(videoPath);
             _rec.Record(videoPath);
         }
         catch (Exception ex)

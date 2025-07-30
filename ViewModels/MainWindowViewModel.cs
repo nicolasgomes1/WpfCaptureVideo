@@ -14,6 +14,7 @@ public partial class MainWindowViewModel : ObservableObject
     private readonly ILogger _logger = Log.ForContext<MainWindowViewModel>();
     private readonly RecorderWrapper _recorder = new();
     private readonly string _configFilePath = "C:\\Users\\nicol\\RiderProjects\\WpfRecorder\\SaveDirectory.json";
+        //;
      //   Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SaveDirectory.json");
 
     public MainWindowViewModel()
@@ -145,12 +146,26 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task StartRecording()
     {
+        var videoPath = "";
+        var currentDate = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+
+        if (IsVideoPathValid())
+        {
+            videoPath = Path.Combine(VideoPath, $"Recorder_{currentDate}.mp4");
+
+        }
+        else
+        {
+            videoPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"Recorder_{currentDate}.mp4");
+            _logger.Information("Recording to: {videoPath}", videoPath);
+
+        }
+        _recorder.CreateRecording(videoPath);
         // Initialize time tracking
         _recordingStartTime = DateTime.Now;
         _pausedDuration = TimeSpan.Zero;
         await StartTimer();
 
-        _recorder.CreateRecording();
         _logger.Information("Start recording");
         IsStartButtonEnabled = false;
         IsResumeButtonEnabled = false;
@@ -229,14 +244,36 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task TakeScreenShoot()
     {
+        var screenShootPath = "";
         var currentDate = DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
-        string screenShootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"Capture_{currentDate}.png");
-        _logger.Information("Saving ScreenShoot to: {ScreenShootPath}", screenShootPath);
+        if (IsPicturePathValid())
+        {
+            screenShootPath = Path.Combine(PicturePath, $"Capture_{currentDate}.png");
+        }
+        else
+        {
+            screenShootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"Capture_{currentDate}.png");
+            _logger.Information("Saving ScreenShoot to: {ScreenShootPath}", screenShootPath);
+        }
+        
+
         var screen = new ScreenShootWrapper();
         screen.TakeScreenshot(screenShootPath);
         await Task.CompletedTask;
     }
+
+    private bool IsPicturePathValid()
+    {
+        return !string.IsNullOrWhiteSpace(PicturePath) && Directory.Exists(PicturePath);
+    }
+
+    private bool IsVideoPathValid()
+    {
+        return !string.IsNullOrWhiteSpace(VideoPath) && Directory.Exists(VideoPath);
+    }
+    
+    
 
     [RelayCommand]
     private async Task TakeScreenShootRegion()

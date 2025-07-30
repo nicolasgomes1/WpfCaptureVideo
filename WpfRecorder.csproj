@@ -55,6 +55,10 @@
         <Resource Include="Assets\screenshot_region.svg" />
         <None Remove="Assets\settings.svg" />
         <Resource Include="Assets\settings.svg" />
+        <None Remove="SaveDirectory.json" />
+        <Resource Include="SaveDirectory.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Resource>
 
     </ItemGroup>
 
