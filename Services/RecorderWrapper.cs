@@ -14,7 +14,9 @@ public class RecorderWrapper : IDisposable
 
     private string VideoOptions()
     {
-        string videoPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "test1.mp4");
+        var currentDate = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        
+        string videoPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"Recorder_{currentDate}.mp4");
         _logger.Information("Recording to: {videoPath}", videoPath);
         var options = new RecorderOptions
         {

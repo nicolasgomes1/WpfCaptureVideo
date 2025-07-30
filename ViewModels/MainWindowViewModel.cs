@@ -86,7 +86,9 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task TakeScreenShoot()
     {
-        string screenShootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "test11.png");
+        var currentDate = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+
+        string screenShootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"Capture_{currentDate}.png");
         _logger.Information("Saving ScreenShoot to: {ScreenShootPath}", screenShootPath);
         var screen = new ScreenShootWrapper();
         screen.TakeScreenshot(screenShootPath);
