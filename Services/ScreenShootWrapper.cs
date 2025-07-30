@@ -65,6 +65,56 @@ public class ScreenShootWrapper
         data.SaveTo(stream);
     }
 
+    public static void TakeScreenshotRegion(string filePath, int x, int y, int width, int height)
+    {
+        int bytesPerPixel = 4;
+        int stride = width * bytesPerPixel;
+        int bufferSize = stride * height;
+
+        IntPtr screenDC = GetDC(IntPtr.Zero);
+        IntPtr memDC = CreateCompatibleDC(screenDC);
+        IntPtr hBitmap = CreateCompatibleBitmap(screenDC, width, height);
+        IntPtr oldBitmap = SelectObject(memDC, hBitmap);
+
+        BitBlt(memDC, 0, 0, width, height, screenDC, x, y, SRCCOPY);
+
+        byte[] pixelData = new byte[bufferSize];
+
+        BITMAPINFO bmi = new BITMAPINFO();
+        bmi.bmiHeader.biSize = Marshal.SizeOf(typeof(BITMAPINFOHEADER));
+        bmi.bmiHeader.biWidth = width;
+        bmi.bmiHeader.biHeight = -height;
+        bmi.bmiHeader.biPlanes = 1;
+        bmi.bmiHeader.biBitCount = 32;
+        bmi.bmiHeader.biCompression = 0;
+
+        GetDIBits(memDC, hBitmap, 0, (uint)height, pixelData, ref bmi, 0);
+
+        SelectObject(memDC, oldBitmap);
+        DeleteObject(hBitmap);
+        DeleteDC(memDC);
+        ReleaseDC(IntPtr.Zero, screenDC);
+
+        var info = new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
+        using var skBitmap = new SKBitmap();
+        var handle = GCHandle.Alloc(pixelData, GCHandleType.Pinned);
+        try
+        {
+            skBitmap.InstallPixels(info, handle.AddrOfPinnedObject(), info.RowBytes, null, () => handle.Free());
+        }
+        catch
+        {
+            handle.Free();
+            throw;
+        }
+
+        using var image = SKImage.FromBitmap(skBitmap);
+        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+        using var stream = File.OpenWrite(filePath);
+        data.SaveTo(stream);
+    }
+
+    
     private const int SRCCOPY = 0x00CC0020;
 
     [DllImport("user32.dll")]

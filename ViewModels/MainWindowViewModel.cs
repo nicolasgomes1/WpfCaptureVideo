@@ -207,9 +207,25 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task TakeScreenShootRegion()
     {
-        _logger.Information("Taking a screenshoot of a region");
-        await Task.CompletedTask;
+        _logger.Information("Selecting a region for screenshot");
+
+        await Task.Yield(); // Ensure async context
+
+        var selector = new RegionSelectorWindow();
+        if (selector.ShowDialog() == true)
+        {
+            var rect = selector.SelectedRegion;
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "region_screenshot.png");
+
+            ScreenShootWrapper.TakeScreenshotRegion(path, (int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
+            _logger.Information("Screenshot saved to {Path}", path);
+        }
+        else
+        {
+            _logger.Information("Region selection cancelled");
+        }
     }
+
     
     
     // Timer management methods

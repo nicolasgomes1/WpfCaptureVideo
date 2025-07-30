@@ -29,6 +29,7 @@
       <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
       <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
       <PackageReference Include="SkiaSharp" Version="3.119.0" />
+      <PackageReference Include="SkiaSharp.Views.WPF" Version="3.119.0" />
       <PackageReference Include="Svg.Skia" Version="3.0.4" />
     </ItemGroup>
 
