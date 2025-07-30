@@ -38,9 +38,12 @@
                                Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/video_file.svg'}" />
                     </StackPanel>
                 </TabItem.Header>
-                <StackPanel Margin="10">
-                    <Border Background="LightGray">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Margin="10" Orientation="Vertical">
+                    <StackPanel>
+                        <TextBlock FontSize="20" Text="{Binding ElapsedTime}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <StackPanel>
                                 <Button Style="{StaticResource MyButtonStyle}"
                                         Command="{Binding StartRecordingCommand}"
@@ -126,7 +129,6 @@
 
                         </StackPanel>
 
-                    </Border>
                 </StackPanel>
             </TabItem>
 
@@ -139,7 +141,6 @@
                     </StackPanel>
                 </TabItem.Header>
                 <StackPanel Margin="10">
-                    <Border Background="LightGray">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <StackPanel>
                                 <Button Style="{StaticResource MyButtonStyle}"
@@ -171,7 +172,6 @@
                             </StackPanel>
                         </StackPanel>
 
-                    </Border>
                 </StackPanel>
             </TabItem>
         </TabControl>
