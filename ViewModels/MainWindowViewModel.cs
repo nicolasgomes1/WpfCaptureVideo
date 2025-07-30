@@ -290,4 +290,23 @@ public partial class MainWindowViewModel : ObservableObject
         ElapsedTime = elapsed.ToString(@"hh\:mm\:ss");
     }
 
+    [ObservableProperty] public partial int MultipleScreenShoots { get; set; } = 0;
+    
+    
+    [RelayCommand]
+    public async Task TakeMultipleScreenshoot()
+    {
+        MultipleScreenShoots++;
+        _logger.Information("Taking multiple screenshoots");
+        await Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    public async Task ExportToPdf()
+    {
+        MultipleScreenShoots = 0;
+        _logger.Information("Exporting to PDF");
+        await Task.CompletedTask;
+    }
+
 }
