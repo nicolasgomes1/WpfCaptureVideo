@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.IO;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Serilog;
 using Serilog.Core;
@@ -80,6 +81,15 @@ public partial class MainWindowViewModel : ObservableObject
         IsSaveButtonEnabled = false;
         IsCancelButtonEnabled = false;
         await Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    private async Task TakeScreenShoot()
+    {
+        string screenShootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "test1.png");
+        _logger.Information("Recording to: {ScreenShootPath}", screenShootPath);
+        var screen = new ScreenShootWrapper();
+        screen.TakeScreenshot(screenShootPath);
     }
     
     

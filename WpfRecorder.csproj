@@ -28,6 +28,7 @@
       <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
       <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+      <PackageReference Include="SkiaSharp" Version="3.119.0" />
       <PackageReference Include="Svg.Skia" Version="3.0.4" />
     </ItemGroup>
 
@@ -40,10 +41,15 @@
       <Resource Include="Assets\resume.svg" />
       <None Remove="Assets\stop_circle.svg" />
       <Resource Include="Assets\stop_circle.svg" />
-      <None Remove="Assets\app.ico" />
+      <None Remove="Assets\capture.svg" />
+      <Resource Include="Assets\capture.svg" />
+        <None Remove="Assets\app.ico" />
       <Resource Include="Assets\app.ico" />
-      <None Remove="Assets\cancel.svg" />
-      <Resource Include="Assets\cancel_button.svg" />
+      <None Remove="Assets\video_file.svg" />
+      <Resource Include="Assets\video_file.svg" />
+        <None Remove="Assets\cancel_button.svg" />
+        <Resource Include="Assets\cancel_button.svg" />
+
     </ItemGroup>
 
 </Project>
