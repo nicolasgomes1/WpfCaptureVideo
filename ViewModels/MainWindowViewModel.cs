@@ -207,6 +207,9 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task TakeScreenShootRegion()
     {
+        var screenShootPath = "";
+        var currentDate = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        
         _logger.Information("Selecting a region for screenshot");
 
         await Task.Yield(); // Ensure async context
@@ -215,10 +218,19 @@ public partial class MainWindowViewModel : ObservableObject
         if (selector.ShowDialog() == true)
         {
             var rect = selector.SelectedRegion;
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "region_screenshot.png");
 
-            ScreenShootWrapper.TakeScreenshotRegion(path, (int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
-            _logger.Information("Screenshot saved to {Path}", path);
+            if (IsPicturePathValid())
+            {
+                screenShootPath = Path.Combine(PicturePath, $"CaptureP_{currentDate}.png");
+                _logger.Information("Screenshot saved to {Path}", screenShootPath);
+            }
+            else
+            {
+                screenShootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"CaptureP_{currentDate}.png");
+                _logger.Information("Screenshot saved to {Path}", screenShootPath);
+            }
+            
+            ScreenShootWrapper.TakeScreenshotRegion(screenShootPath, (int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
         }
         else
         {
