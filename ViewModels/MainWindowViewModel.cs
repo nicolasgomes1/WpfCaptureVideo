@@ -85,7 +85,7 @@ public partial class MainWindowViewModel : ObservableObject
         {
             if (SetProperty(ref _videoPath, value))
             {
-                UpdateJsonKey("SaveDirectories", "VideoDir", value);
+                SettingsService.UpdateJsonKey("SaveDirectories", "VideoDir", value);
             }
         }
     }
@@ -98,48 +98,11 @@ public partial class MainWindowViewModel : ObservableObject
         {
             if (SetProperty(ref _picturePath, value))
             {
-                UpdateJsonKey("SaveDirectories", "PictureDir", value);
+                SettingsService.UpdateJsonKey("SaveDirectories", "PictureDir", value);
             }
         }
     }
     
-    private void UpdateJsonKey(string parentKey, string key, string value)
-    {
-        try
-        {
-            JsonObject jsonObject;
-        
-            if (File.Exists(_configFilePath))
-            {
-                var existingJson = File.ReadAllText(_configFilePath);
-                jsonObject = JsonNode.Parse(existingJson)?.AsObject() ?? new JsonObject();
-            }
-            else
-            {
-                jsonObject = new JsonObject();
-            }
-        
-            // Ensure parent key exists
-            if (!jsonObject.ContainsKey(parentKey))
-            {
-                jsonObject[parentKey] = new JsonObject();
-            }
-        
-            // Update specific key
-            jsonObject[parentKey]![key] = value;
-        
-            // Save back
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            var jsonString = JsonSerializer.Serialize(jsonObject, options);
-            File.WriteAllText(_configFilePath, jsonString);
-        
-            _logger.Information("Updated JSON key {ParentKey}.{Key}: {Value}", parentKey, key, value);
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Error updating JSON key {Key}", key);
-        }
-    }
 
 
     
