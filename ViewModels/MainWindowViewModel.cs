@@ -185,9 +185,10 @@ public partial class MainWindowViewModel : ObservableObject
             _logger.Information("Saving ScreenShoot to: {ScreenShootPath}", screenShootPath);
         }
         
-
+        
         var screen = new ScreenShootWrapper();
         screen.TakeScreenshot(screenShootPath);
+        _logger.Information("Saved Screenshoot to: {a}", screenShootPath);
         await Task.CompletedTask;
     }
 
