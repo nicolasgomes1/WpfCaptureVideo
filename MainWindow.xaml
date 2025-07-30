@@ -153,7 +153,7 @@
                                 </Button>
                                 <TextBlock
                                     Visibility="{Binding IsHelpVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    Take ScreenShoot
+                                    ScreenShoot
                                 </TextBlock>
                             </StackPanel>
                             <StackPanel>
@@ -167,7 +167,7 @@
                                 </Button>
                                 <TextBlock
                                     Visibility="{Binding IsHelpVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    Take ScreenShoot Region
+                                    Partial ScreenShoot
                                 </TextBlock>
                             </StackPanel>
                         </StackPanel>
