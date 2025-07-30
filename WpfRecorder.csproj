@@ -49,6 +49,10 @@
       <Resource Include="Assets\video_file.svg" />
         <None Remove="Assets\cancel_button.svg" />
         <Resource Include="Assets\cancel_button.svg" />
+        <None Remove="Assets\screenshot_monitor.svg" />
+        <Resource Include="Assets\screenshot_monitor.svg" />
+        <None Remove="Assets\screenshot_region.svg" />
+        <Resource Include="Assets\screenshot_region.svg" />
 
     </ItemGroup>
 

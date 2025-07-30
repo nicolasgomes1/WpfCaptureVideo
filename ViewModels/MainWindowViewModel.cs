@@ -86,10 +86,18 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task TakeScreenShoot()
     {
-        string screenShootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "test1.png");
+        string screenShootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "test11.png");
         _logger.Information("Saving ScreenShoot to: {ScreenShootPath}", screenShootPath);
         var screen = new ScreenShootWrapper();
         screen.TakeScreenshot(screenShootPath);
+        await Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    private async Task TakeScreenShootRegion()
+    {
+        _logger.Information("Taking a screenshoot of a region");
+        await Task.CompletedTask;
     }
     
     
