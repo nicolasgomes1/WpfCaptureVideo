@@ -1,18 +1,21 @@
 ﻿using System.IO;
 using ScreenRecorderLib;
+using Serilog;
 
 namespace WpfRecorder.Services;
 
 public class RecorderWrapper : IDisposable
 {
+    private readonly ILogger _logger = Log.ForContext<RecorderWrapper>();
+
+    
     private Recorder _rec;
     private RecorderStatus _status = RecorderStatus.Idle;
 
     private string VideoOptions()
     {
         string videoPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "test1.mp4");
-        Console.WriteLine($"Recording to: {videoPath}");
-
+        _logger.Information("Recording to: {videoPath}", videoPath);
         var options = new RecorderOptions
         {
             VideoEncoderOptions = new VideoEncoderOptions
@@ -24,7 +27,7 @@ public class RecorderWrapper : IDisposable
             },
             AudioOptions = new AudioOptions
             {
-                IsAudioEnabled = false
+                IsAudioEnabled = true
             },
             OutputOptions = new OutputOptions
             {
@@ -49,8 +52,8 @@ public class RecorderWrapper : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error creating recording: {ex.Message}");
-            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            _logger.Error("Error creating recording: {a}", ex.Message);
+            _logger.Error("Stack trace: {a}", ex.StackTrace);
         }
     }
 
@@ -66,7 +69,7 @@ public class RecorderWrapper : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error stopping recording: {ex.Message}");
+            _logger.Error("Error ending recording: {a}", ex.Message);
         }
     }
 
@@ -80,12 +83,13 @@ public class RecorderWrapper : IDisposable
             }
             else
             {
-                Console.WriteLine("Cannot pause. Recorder is not in Recording state.");
+                _logger.Warning("Cannot pause. Recorder is not in Recording state.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error pausing recording: {ex.Message}");
+            _logger.Error("Error pausing recording: {a}", ex.Message);
+
         }
     }
 
@@ -104,33 +108,34 @@ public class RecorderWrapper : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error resuming recording: {ex.Message}");
+            _logger.Error("Error resuming recording: {a}", ex.Message);
         }
     }
 
     private void Rec_OnRecordingComplete(object? sender, RecordingCompleteEventArgs e)
     {
-        Console.WriteLine($"Recording complete: {e.FilePath}");
+        _logger.Information("Recording complete: {a}", e.FilePath);
         if (File.Exists(e.FilePath))
         {
             var fileInfo = new FileInfo(e.FilePath);
-            Console.WriteLine($"File size: {fileInfo.Length} bytes");
+            _logger.Information("File size: {a} bytes", fileInfo.Length);
         }
         else
         {
-            Console.WriteLine($"Warning: File not found at {e.FilePath}");
+            _logger.Error("File not found at {a}", e.FilePath);
+
         }
     }
 
     private void Rec_OnRecordingFailed(object? sender, RecordingFailedEventArgs e)
     {
-        Console.WriteLine($"Recording failed: {e.Error}");
+        _logger.Error("Recording failed: {a}", e.Error);
     }
 
     private void Rec_OnStatusChanged(object? sender, RecordingStatusEventArgs e)
     {
         _status = e.Status;
-        Console.WriteLine($"Recording status changed: {_status}");
+        _logger.Information("Recording status changed: {a}", _status);
     }
 
     public void Dispose()
