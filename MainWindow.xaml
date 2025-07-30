@@ -185,16 +185,11 @@
                                                    Margin="5,0,0,0"/>
                                     </StackPanel>
                                 </Button>
-                                <TextBlock
-                                    Visibility="{Binding IsHelpVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    Multiple 
-                                    <LineBreak/>
-                                    ScreenShoots
-                                </TextBlock>
                             </StackPanel>
                             <StackPanel>
                                 <Button Style="{StaticResource MyButtonStyle}"
-                                        Command="{Binding ExportToPdfCommand}">
+                                        Command="{Binding ExportToPdfCommand}"
+                                        IsEnabled="{Binding IsExportToPdfVisible}">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <Viewbox Stretch="Uniform" Height="26" Width="26">
                                             <Image ToolTip="Export to pdf"
@@ -207,6 +202,23 @@
                                     Export 
                                     <LineBreak/>
                                     Pdf
+                                </TextBlock>
+                            </StackPanel>
+                            <StackPanel>
+                                <Button Style="{StaticResource MyButtonStyle}"
+                                        Command="{Binding ClearTempScreenshotsCommand}">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Viewbox Stretch="Uniform" Height="26" Width="26">
+                                            <Image ToolTip="Clear all Temp files"
+                                                   Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/clear_all.svg'}" />
+                                        </Viewbox>
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock
+                                    Visibility="{Binding IsHelpVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    Clear 
+                                    <LineBreak/>
+                                    All
                                 </TextBlock>
                             </StackPanel>
                         </StackPanel>

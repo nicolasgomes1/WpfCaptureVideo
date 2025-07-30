@@ -17,6 +17,7 @@ public partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel()
     {
         SettingsService.LoadFromJson(ref _videoPath, ref _picturePath);
+        _logger.Information("Temprary Count {a}",screen.GetTempImageCount());
     }
 
 
@@ -37,8 +38,14 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] public partial bool IsResumeButtonEnabled { get; set; } = false;
     [ObservableProperty] public partial bool IsSaveButtonEnabled { get; set; } = false;
     [ObservableProperty] public partial bool IsCancelButtonEnabled { get; set; } = false;
-
     
+    public bool IsExportToPdfVisible => screen.GetTempImageCount() > 0;
+
+    private void UpdateIsExportToPdfVisible()
+    {
+        OnPropertyChanged(nameof(IsExportToPdfVisible));
+    }
+
     [ObservableProperty] public partial bool IsHelpVisible { get; set; } = false;
 
     
@@ -295,7 +302,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     public async Task TakeMultipleScreenshoot()
     {
-
+        UpdateIsExportToPdfVisible();
         try
         {
             
