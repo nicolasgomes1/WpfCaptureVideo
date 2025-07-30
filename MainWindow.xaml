@@ -170,6 +170,20 @@
                                     Partial ScreenShoot
                                 </TextBlock>
                             </StackPanel>
+                            <StackPanel>
+                                <Button Style="{StaticResource MyButtonStyle}"
+                                        Command="{Binding TakeScreenShootRegionCommand}">
+                                    <Viewbox Stretch="Uniform">
+                                        <Image Width="26" Height="26"
+                                               ToolTip="Take Multiple Screenshoots"
+                                               Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/photo_library.svg'}" />
+                                    </Viewbox>
+                                </Button>
+                                <TextBlock
+                                    Visibility="{Binding IsHelpVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    Multiple ScreenShoots
+                                </TextBlock>
+                            </StackPanel>
                         </StackPanel>
 
                 </StackPanel>

@@ -60,6 +60,7 @@
         <Resource Include="SaveDirectory.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Resource>
+        <None Remove="Assets\photo_library.svg" />
 
     </ItemGroup>
 
