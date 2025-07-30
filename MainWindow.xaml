@@ -174,6 +174,15 @@
 
                 </StackPanel>
             </TabItem>
+            <TabItem >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="26" Height="26"
+                               Margin="0,0,5,0"
+                               Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/settings.svg'}" />
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
         </TabControl>
     </Grid>
 

@@ -53,6 +53,8 @@
         <Resource Include="Assets\screenshot_monitor.svg" />
         <None Remove="Assets\screenshot_region.svg" />
         <Resource Include="Assets\screenshot_region.svg" />
+        <None Remove="Assets\settings.svg" />
+        <Resource Include="Assets\settings.svg" />
 
     </ItemGroup>
 

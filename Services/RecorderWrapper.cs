@@ -9,7 +9,7 @@ public class RecorderWrapper : IDisposable
     private readonly ILogger _logger = Log.ForContext<RecorderWrapper>();
 
     
-    private Recorder _rec;
+    private Recorder _rec = null!;
     private RecorderStatus _status = RecorderStatus.Idle;
 
     private string VideoOptions()
