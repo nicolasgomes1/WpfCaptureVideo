@@ -32,10 +32,10 @@
         <TabControl Background="Gray">
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Image Width="26" Height="26"
                                Margin="0,0,5,0"
-                               Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/video_file.svg'}"/>
+                               Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/video_file.svg'}" />
                     </StackPanel>
                 </TabItem.Header>
                 <StackPanel Margin="10">
@@ -132,15 +132,32 @@
 
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Image Width="26" Height="26"
                                Margin="0,0,5,0"
-                               Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/capture.svg'}"/>
+                               Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/capture.svg'}" />
                     </StackPanel>
                 </TabItem.Header>
                 <StackPanel Margin="10">
-                    <TextBlock Text="This is content of Tab 2" FontSize="16" />
-                    <TextBox Width="200" Margin="5" />
+                    <Border Background="LightGray">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <StackPanel>
+                                <Button Style="{StaticResource MyButtonStyle}"
+                                        Command="{Binding TakeScreenShootCommand}">
+                                    <Viewbox Stretch="Uniform">
+                                        <Image Width="26" Height="26"
+                                               ToolTip="Take Screenshoot"
+                                               Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/capture.svg'}" />
+                                    </Viewbox>
+                                </Button>
+                                <TextBlock
+                                    Visibility="{Binding IsHelpVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    Take ScreenShoot
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </Border>
                 </StackPanel>
             </TabItem>
         </TabControl>
