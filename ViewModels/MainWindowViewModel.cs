@@ -87,7 +87,7 @@ public partial class MainWindowViewModel : ObservableObject
     private async Task TakeScreenShoot()
     {
         string screenShootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "test1.png");
-        _logger.Information("Recording to: {ScreenShootPath}", screenShootPath);
+        _logger.Information("Saving ScreenShoot to: {ScreenShootPath}", screenShootPath);
         var screen = new ScreenShootWrapper();
         screen.TakeScreenshot(screenShootPath);
     }
