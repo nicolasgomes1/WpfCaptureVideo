@@ -13,7 +13,7 @@ public partial class MainWindowViewModel : ObservableObject
 {
     private readonly ILogger _logger = Log.ForContext<MainWindowViewModel>();
     private readonly RecorderWrapper _recorder = new();
-
+    private readonly ScreenShootWrapper screen = new();
     public MainWindowViewModel()
     {
         SettingsService.LoadFromJson(ref _videoPath, ref _picturePath);
@@ -186,7 +186,6 @@ public partial class MainWindowViewModel : ObservableObject
         }
         
         
-        var screen = new ScreenShootWrapper();
         screen.TakeScreenshot(screenShootPath);
         _logger.Information("Saved Screenshoot to: {a}", screenShootPath);
         await Task.CompletedTask;
@@ -296,17 +295,68 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     public async Task TakeMultipleScreenshoot()
     {
-        MultipleScreenShoots++;
-        _logger.Information("Taking multiple screenshoots");
+
+        try
+        {
+            
+            var count = screen.TakeScreenshotToTemp();
+            MultipleScreenShoots = count;
+            _logger.Information("Taking multiple screenshots. Total stored: {Count}", count);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error taking screenshot to temporary storage");
+        }
         await Task.CompletedTask;
     }
+
 
     [RelayCommand]
     public async Task ExportToPdf()
     {
-        MultipleScreenShoots = 0;
-        _logger.Information("Exporting to PDF");
+
+        try
+        {
+            if (MultipleScreenShoots == 0)
+            {
+                _logger.Warning("No screenshots to export");
+                return;
+            }
+
+            var currentDate = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string pdfPath;
+
+            if (IsPicturePathValid())
+            {
+                pdfPath = Path.Combine(PicturePath, $"Screenshots_{currentDate}.pdf");
+            }
+            else
+            {
+                pdfPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"Screenshots_{currentDate}.pdf");
+            }
+
+            screen.ExportTempImagesToPdf(pdfPath);
+            screen.ClearTempImages();
+            MultipleScreenShoots = 0;
+            
+            _logger.Information("Exported {Count} screenshots to PDF: {Path}", MultipleScreenShoots, pdfPath);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error exporting screenshots to PDF");
+        }
         await Task.CompletedTask;
     }
+    
+    [RelayCommand]
+    public async Task ClearTempScreenshots()
+    {
+        screen.ClearTempImages();
+        MultipleScreenShoots = 0;
+        _logger.Information("Cleared temporary screenshots");
+        await Task.CompletedTask;
+    }
+
+
 
 }
