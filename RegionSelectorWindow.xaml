@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent"
+        Background="Gray"
         Topmost="True"
         ResizeMode="NoResize"
         WindowState="Maximized"

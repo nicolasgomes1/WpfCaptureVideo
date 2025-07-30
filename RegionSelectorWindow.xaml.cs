@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ using SkiaSharp;
 using SkiaSharp.Views.WPF;
 using SkiaSharp.Views.Desktop;
 using Point = System.Windows.Point;
+
 namespace WpfRecorder;
 
 public partial class RegionSelectorWindow : Window
@@ -19,16 +21,40 @@ public partial class RegionSelectorWindow : Window
 
     private readonly SKElement _skElement;
 
+    
+    [DllImport("user32.dll")]
+    private static extern int GetSystemMetrics(int nIndex);
+
+    private const int SM_XVIRTUALSCREEN = 76;
+    private const int SM_YVIRTUALSCREEN = 77;
+    private const int SM_CXVIRTUALSCREEN = 78;
+    private const int SM_CYVIRTUALSCREEN = 79;
+    
     public RegionSelectorWindow()
     {
+        InitializeComponent();
+
+        Cursor = Cursors.Cross;
+
+        // Get full virtual screen bounds (all monitors + taskbar)
+        int left = GetSystemMetrics(SM_XVIRTUALSCREEN);
+        int top = GetSystemMetrics(SM_YVIRTUALSCREEN);
+        int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+        int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+
+        Left = left;
+        Top = top;
+        Width = width;
+        Height = height;
+
         WindowStyle = WindowStyle.None;
         AllowsTransparency = true;
         Background = Brushes.Transparent;
         Topmost = true;
         ResizeMode = ResizeMode.NoResize;
-        WindowState = WindowState.Maximized;
-        Cursor = Cursors.Cross;
+        ShowInTaskbar = false;
 
+        // Your SkiaSharp setup and event handlers here
         _skElement = new SKElement();
         _skElement.PaintSurface += OnPaintSurface;
         Content = _skElement;
@@ -62,7 +88,6 @@ public partial class RegionSelectorWindow : Window
             DialogResult = true;
         };
     }
-
 
 
     private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
