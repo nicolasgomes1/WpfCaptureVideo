@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Serilog;
@@ -75,8 +76,71 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] public partial bool IsHelpVisible { get; set; } = false;
 
     
-    [ObservableProperty] public partial string VideoPath { get; set; } = string.Empty;
-    [ObservableProperty] public partial string PicturePath { get; set; } = string.Empty;
+    private string _videoPath = string.Empty;
+    public string VideoPath 
+    { 
+        get => _videoPath;
+        set
+        {
+            if (SetProperty(ref _videoPath, value))
+            {
+                UpdateJsonKey("SaveDirectories", "VideoDir", value);
+            }
+        }
+    }
+
+    private string _picturePath = string.Empty;
+    public string PicturePath 
+    { 
+        get => _picturePath;
+        set
+        {
+            if (SetProperty(ref _picturePath, value))
+            {
+                UpdateJsonKey("SaveDirectories", "PictureDir", value);
+            }
+        }
+    }
+    
+    private void UpdateJsonKey(string parentKey, string key, string value)
+    {
+        try
+        {
+            JsonObject jsonObject;
+        
+            if (File.Exists(_configFilePath))
+            {
+                var existingJson = File.ReadAllText(_configFilePath);
+                jsonObject = JsonNode.Parse(existingJson)?.AsObject() ?? new JsonObject();
+            }
+            else
+            {
+                jsonObject = new JsonObject();
+            }
+        
+            // Ensure parent key exists
+            if (!jsonObject.ContainsKey(parentKey))
+            {
+                jsonObject[parentKey] = new JsonObject();
+            }
+        
+            // Update specific key
+            jsonObject[parentKey]![key] = value;
+        
+            // Save back
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            var jsonString = JsonSerializer.Serialize(jsonObject, options);
+            File.WriteAllText(_configFilePath, jsonString);
+        
+            _logger.Information("Updated JSON key {ParentKey}.{Key}: {Value}", parentKey, key, value);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error updating JSON key {Key}", key);
+        }
+    }
+
+
     
     [RelayCommand]
     private async Task StartRecording()
