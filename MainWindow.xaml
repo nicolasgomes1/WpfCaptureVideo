@@ -182,6 +182,28 @@
                                Source="{Binding Converter={StaticResource SvgConverter}, ConverterParameter='pack://application:,,,/Assets/settings.svg'}" />
                     </StackPanel>
                 </TabItem.Header>
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Video Path" Margin="5" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding VideoPath}" Grid.Column="1" Margin="5"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Picture Path" Margin="5" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding PicturePath}" Grid.Column="1" Margin="5"/>
+                    </Grid>
+                </StackPanel>
+
             </TabItem>
         </TabControl>
     </Grid>

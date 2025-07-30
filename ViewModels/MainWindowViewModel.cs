@@ -33,6 +33,9 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] public partial bool IsHelpVisible { get; set; } = false;
 
     
+    [ObservableProperty] public partial string VideoPath { get; set; } = string.Empty;
+    [ObservableProperty] public partial string PicturePath { get; set; } = string.Empty;
+    
     [RelayCommand]
     private async Task StartRecording()
     {
