@@ -13,47 +13,12 @@ public partial class MainWindowViewModel : ObservableObject
 {
     private readonly ILogger _logger = Log.ForContext<MainWindowViewModel>();
     private readonly RecorderWrapper _recorder = new();
-    private readonly string _configFilePath = "C:\\Users\\nicol\\RiderProjects\\WpfRecorder\\SaveDirectory.json";
-        //;
-     //   Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SaveDirectory.json");
 
     public MainWindowViewModel()
     {
-        LoadFromJson();
+        SettingsService.LoadFromJson(ref _videoPath, ref _picturePath);
     }
 
-    private void LoadFromJson()
-    {
-        try
-        {
-            if (!File.Exists(_configFilePath)) return;
-            var json = File.ReadAllText(_configFilePath);
-            using var doc = JsonDocument.Parse(json);
-                
-            if (doc.RootElement.TryGetProperty("SaveDirectories", out var saveDirectories))
-            {
-                if (saveDirectories.TryGetProperty("VideoDir", out var videoDir))
-                {
-                    VideoPath = videoDir.GetString() ?? string.Empty;
-                }
-                    
-                if (saveDirectories.TryGetProperty("PictureDir", out var pictureDir))
-                {
-                    PicturePath = pictureDir.GetString() ?? string.Empty;
-                }
-            }
-                
-            OnPropertyChanged(nameof(VideoPath));
-            OnPropertyChanged(nameof(PicturePath));
-                
-            _logger.Information("Loaded from JSON - VideoDir: {VideoPath}, PictureDir: {PicturePath}", 
-                VideoPath, PicturePath);
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Error loading settings from JSON");
-        }
-    }
 
     
     // Timer and time tracking fields

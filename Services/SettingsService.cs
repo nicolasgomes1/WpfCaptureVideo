@@ -50,4 +50,34 @@ public static class SettingsService
         }
     }
 
+    public static void LoadFromJson(ref string videoPath, ref string picturePath)
+    {
+        try
+        {
+            if (!File.Exists(ConfigFilePath)) return;
+            var json = File.ReadAllText(ConfigFilePath);
+            using var doc = JsonDocument.Parse(json);
+                
+            if (doc.RootElement.TryGetProperty("SaveDirectories", out var saveDirectories))
+            {
+                if (saveDirectories.TryGetProperty("VideoDir", out var videoDir))
+                {
+                    videoPath = videoDir.GetString() ?? string.Empty;
+                }
+                    
+                if (saveDirectories.TryGetProperty("PictureDir", out var pictureDir))
+                {
+                    picturePath = pictureDir.GetString() ?? string.Empty;
+                }
+            }
+                
+            Logger.Information("Loaded from JSON - VideoDir: {VideoPath}, PictureDir: {PicturePath}", 
+                videoPath, picturePath);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Error loading settings from JSON");
+        }
+    }
+
 }
