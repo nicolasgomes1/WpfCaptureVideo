@@ -210,7 +210,7 @@ public partial class MainWindowViewModel : ObservableObject
         _logger.Information("Selecting a region for screenshot");
 
         await Task.Yield(); // Ensure async context
-
+    
         var selector = new RegionSelectorWindow();
         if (selector.ShowDialog() == true)
         {
