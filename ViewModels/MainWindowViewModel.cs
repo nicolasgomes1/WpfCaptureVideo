@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Serilog;
@@ -13,13 +14,12 @@ public partial class MainWindowViewModel : ObservableObject
 {
     private readonly ILogger _logger = Log.ForContext<MainWindowViewModel>();
     private readonly RecorderWrapper _recorder = new();
-    private readonly ScreenShootWrapper screen = new();
+    private readonly ScreenShootWrapper _screen = new();
     public MainWindowViewModel()
     {
         SettingsService.LoadFromJson(ref _videoPath, ref _picturePath);
-        _logger.Information("Temprary Count {a}",screen.GetTempImageCount());
+        _logger.Information("Temporary Count {a}",_screen.GetTempImageCount());
     }
-
 
     
     // Timer and time tracking fields
@@ -31,7 +31,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     // Observable property for the elapsed time display
     [ObservableProperty] public partial string ElapsedTime { get; set; } = "00:00:00";
-
+    [ObservableProperty] public partial string TitleName { get; set; } = "Recorder";
     
     [ObservableProperty] public partial bool IsStartButtonEnabled { get; set; } = true;
     [ObservableProperty] public partial bool IsPauseButtonEnabled { get; set; } = false;
@@ -39,7 +39,7 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] public partial bool IsSaveButtonEnabled { get; set; } = false;
     [ObservableProperty] public partial bool IsCancelButtonEnabled { get; set; } = false;
     
-    public bool IsExportToPdfVisible => screen.GetTempImageCount() > 0;
+    public bool IsExportToPdfVisible => _screen.GetTempImageCount() > 0;
 
     private void UpdateIsExportToPdfVisible()
     {
@@ -193,7 +193,7 @@ public partial class MainWindowViewModel : ObservableObject
         }
         
         
-        screen.TakeScreenshot(screenShootPath);
+        _screen.TakeScreenshot(screenShootPath);
         _logger.Information("Saved Screenshoot to: {a}", screenShootPath);
         await Task.CompletedTask;
     }
@@ -306,7 +306,7 @@ public partial class MainWindowViewModel : ObservableObject
         try
         {
             
-            var count = screen.TakeScreenshotToTemp();
+            var count = _screen.TakeScreenshotToTemp();
             MultipleScreenShoots = count;
             _logger.Information("Taking multiple screenshots. Total stored: {Count}", count);
         }
@@ -342,8 +342,8 @@ public partial class MainWindowViewModel : ObservableObject
                 pdfPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"Screenshots_{currentDate}.pdf");
             }
 
-            screen.ExportTempImagesToPdf(pdfPath);
-            screen.ClearTempImages();
+            _screen.ExportTempImagesToPdf(pdfPath);
+            _screen.ClearTempImages();
             MultipleScreenShoots = 0;
             
             _logger.Information("Exported {Count} screenshots to PDF: {Path}", MultipleScreenShoots, pdfPath);
@@ -358,7 +358,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     public async Task ClearTempScreenshots()
     {
-        screen.ClearTempImages();
+        _screen.ClearTempImages();
         MultipleScreenShoots = 0;
         _logger.Information("Cleared temporary screenshots");
         await Task.CompletedTask;

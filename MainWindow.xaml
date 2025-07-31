@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         Icon="pack://application:,,,/Assets/app.ico"
-        Title="Recorder" Height="200" Width="520"
+        Title="{Binding TitleName}" Height="200" Width="520"
         Background="{DynamicResource MaterialDesignPaper}">
 
     <Window.Resources>

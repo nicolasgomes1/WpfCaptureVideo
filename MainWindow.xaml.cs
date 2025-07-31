@@ -15,10 +15,42 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         DataContext = _viewModel;
+
+        UpdateWindowTitle();
+
+        
         // Handle key press events
         KeyDown += MainWindow_KeyDown;
+        IsEnabledChanged += OnIsEnabledChanged;
+        StateChanged += OnStateChanged;
+
     }
 
+    
+    private void UpdateWindowTitle()
+    {
+        // Check if the window is enabled to determine user authorization status
+        if (IsEnabled)
+        {
+            _viewModel.TitleName = "Recorder";
+        }
+        else
+        {
+            _viewModel.TitleName = "Recorder (Unauthorized User)";
+        }
+    }
+
+    private void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        UpdateWindowTitle();
+    }
+
+    private void OnStateChanged(object? sender, EventArgs e)
+    {
+        UpdateWindowTitle();
+    }
+
+    
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key != Key.F1) return;
