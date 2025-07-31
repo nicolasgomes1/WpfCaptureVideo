@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Data;
+using System.Net.Http;
 using Microsoft.Extensions.Hosting;
 
 using System.Windows;
@@ -16,13 +17,58 @@ public partial class App : Application
 {
     private static IHost? AppHost { get; set; }
 
+    void ConnectToApi()
+    {
+        var httpContext = new HttpClient();
+        httpContext.BaseAddress = new Uri("https://localhost:6969");
+        httpContext.DefaultRequestHeaders.Accept.Clear();
+        httpContext.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        var response = httpContext.GetAsync("/ScreenCapture/keys").Result;
+        var content = response.Content.ReadAsStringAsync().Result;
+        Log.Information(content);
+    }
+
+    void ConnectToApiWithKey()
+    {
+        var mykey = "Nicolas-465465-00000-6989658";
+        using var httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri("https://localhost:6969");
+
+
+        httpClient.DefaultRequestHeaders.Accept.Clear();
+        httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+        try
+        {
+            var response = httpClient.GetAsync($"/ScreenCapture/{mykey}/authorize").Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error("Error connecting to API: {StatusCode}", response.StatusCode);
+            }
+            else
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Log.Information("Authorization success: {Content}", content);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Exception during API call");
+        }
+    }
+
+    
+    
+
     
     public App()
     {
+        const string path = "C:\\Users\\nicol\\RiderProjects\\WpfRecorder\\Logs\\log-.txt";
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
             .WriteTo.Console() // Optional: for console output
-            .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.File(path, rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
         AppHost = Host.CreateDefaultBuilder()
@@ -30,10 +76,16 @@ public partial class App : Application
             .ConfigureServices((services) =>
             {
                 services.AddTransient<MainWindowViewModel>();
-                services.AddSingleton<MainWindow>();
             }).Build();
         Log.Information("Application is starting.");
-
+    }
+    
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+        var mainWindow = new MainWindow();
+        mainWindow.Show();
+        ConnectToApiWithKey();
     }
     
     protected override async void OnExit(ExitEventArgs e)
