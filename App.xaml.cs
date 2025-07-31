@@ -18,45 +18,6 @@ public partial class App : Application
 {
     private static IHost? AppHost { get; set; }
 
-
-
-    void ConnectToApiWithKey()
-    {
-        string myApikey = ConnectToApiData.LoadApiKeyFromJson();
-        string myApiEndpoint = ConnectToApiData.LoadApiUriFromJson();
-        using var httpClient = new HttpClient();
-        httpClient.BaseAddress = new Uri(myApiEndpoint);
-
-
-        httpClient.DefaultRequestHeaders.Accept.Clear();
-        httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-        try
-        {
-            var response = httpClient.GetAsync($"/ScreenCapture/{myApikey}/authorize").Result;
-
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error("Error connecting to API: {StatusCode}", response.StatusCode);
-
-                    Current.MainWindow.IsEnabled = false;
-                
-            }
-            else
-            {
-                var content = response.Content.ReadAsStringAsync().Result;
-                Log.Information("Authorization success: {Content}", content);
-            }
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Exception during API call");
-        }
-    }
-
-    
-    
-
     
     public App()
     {
