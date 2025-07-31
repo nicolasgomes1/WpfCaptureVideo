@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using WpfRecorder.Api;
 using WpfRecorder.ViewModels;
 
 namespace WpfRecorder;
@@ -17,22 +18,14 @@ public partial class App : Application
 {
     private static IHost? AppHost { get; set; }
 
-    void ConnectToApi()
-    {
-        var httpContext = new HttpClient();
-        httpContext.BaseAddress = new Uri("https://localhost:6969");
-        httpContext.DefaultRequestHeaders.Accept.Clear();
-        httpContext.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-        var response = httpContext.GetAsync("/ScreenCapture/keys").Result;
-        var content = response.Content.ReadAsStringAsync().Result;
-        Log.Information(content);
-    }
+
 
     void ConnectToApiWithKey()
     {
-        const string mykey = "Nicolas-465465-00000-6989658";
+        string myApikey = ConnectToApiData.LoadApiKeyFromJson();
+        string myApiEndpoint = ConnectToApiData.LoadApiUriFromJson();
         using var httpClient = new HttpClient();
-        httpClient.BaseAddress = new Uri("https://localhost:6969");
+        httpClient.BaseAddress = new Uri(myApiEndpoint);
 
 
         httpClient.DefaultRequestHeaders.Accept.Clear();
@@ -40,7 +33,7 @@ public partial class App : Application
 
         try
         {
-            var response = httpClient.GetAsync($"/ScreenCapture/{mykey}/authorize").Result;
+            var response = httpClient.GetAsync($"/ScreenCapture/{myApikey}/authorize").Result;
 
             if (!response.IsSuccessStatusCode)
             {
@@ -90,7 +83,7 @@ public partial class App : Application
         var mainWindow = new MainWindow();
         MainWindow = mainWindow; // Set the MainWindow property
         mainWindow.Show();
-        ConnectToApiWithKey();
+        ConnectToApiData.ConnectToApiWithKey();
     }
     
     protected override async void OnExit(ExitEventArgs e)

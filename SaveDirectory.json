@@ -2,5 +2,9 @@
   "SaveDirectories": {
     "VideoDir": "C:\\Users\\nicol\\Desktop\\videos",
     "PictureDir": "C:\\Users\\nicol\\Desktop\\Picture"
+  },
+  "ApiKey": {
+    "myApiKey" : "Nicolas-465465-00000-6989658",
+    "myApiEndpoint": "https://localhost:6969"
   }
 }

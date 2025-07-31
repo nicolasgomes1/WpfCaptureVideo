@@ -72,4 +72,8 @@
       <Resource Include="Assets\photo_library.svg" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Logs\" />
+    </ItemGroup>
+
 </Project>
