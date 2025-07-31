@@ -30,7 +30,7 @@ public partial class App : Application
 
     void ConnectToApiWithKey()
     {
-        var mykey = "Nicolas-465465-00000-6989658";
+        const string mykey = "Nicolas-465465-00000-6989658";
         using var httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri("https://localhost:6969");
 
@@ -45,6 +45,9 @@ public partial class App : Application
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error("Error connecting to API: {StatusCode}", response.StatusCode);
+
+                    Current.MainWindow.IsEnabled = false;
+                
             }
             else
             {
@@ -78,12 +81,14 @@ public partial class App : Application
                 services.AddTransient<MainWindowViewModel>();
             }).Build();
         Log.Information("Application is starting.");
+      //  ConnectToApiWithKey();
     }
     
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         var mainWindow = new MainWindow();
+        MainWindow = mainWindow; // Set the MainWindow property
         mainWindow.Show();
         ConnectToApiWithKey();
     }
