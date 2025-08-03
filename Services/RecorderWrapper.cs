@@ -26,7 +26,8 @@ public class RecorderWrapper : IDisposable
             },
             AudioOptions = new AudioOptions
             {
-                IsAudioEnabled = true
+                IsAudioEnabled = true,
+                InputVolume = 1
             },
             OutputOptions = new OutputOptions
             {
