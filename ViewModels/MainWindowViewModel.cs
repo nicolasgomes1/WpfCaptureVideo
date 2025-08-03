@@ -31,7 +31,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     // Observable property for the elapsed time display
     [ObservableProperty] public partial string ElapsedTime { get; set; } = "00:00:00";
-    [ObservableProperty] public partial string TitleName { get; set; } = "Recorder";
+    [ObservableProperty] public partial string TitleName { get; set; } = "QAFlow Recorder";
     
     [ObservableProperty] public partial bool IsStartButtonEnabled { get; set; } = true;
     [ObservableProperty] public partial bool IsPauseButtonEnabled { get; set; } = false;

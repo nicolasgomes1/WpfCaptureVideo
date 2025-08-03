@@ -9,9 +9,9 @@ public static class SettingsService
 {
     private static readonly ILogger Logger = Log.ForContext(typeof(SettingsService));
 
-    
-    private static readonly string ConfigFilePath = "C:\\Users\\nicol\\RiderProjects\\WpfRecorder\\SaveDirectory.json";
 
+ private static readonly string ConfigFilePath =
+     Path.Combine(AppContext.BaseDirectory, "SaveDirectory.json");
     public static void UpdateJsonKey(string parentKey, string key, string value)
     {
         try
@@ -57,20 +57,34 @@ public static class SettingsService
             if (!File.Exists(ConfigFilePath)) return;
             var json = File.ReadAllText(ConfigFilePath);
             using var doc = JsonDocument.Parse(json);
-                
+
+            string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+            if(!Directory.Exists($"{userProfile}\\QAFlow"))
+                Directory.CreateDirectory($"{userProfile}\\QAFlow");
+            
+            if(!Directory.Exists($"{userProfile}\\QAFlow\\Videos"))
+                Directory.CreateDirectory($"{userProfile}\\QAFlow\\Videos");
+            
+            if(!Directory.Exists($"{userProfile}\\QAFlow\\Screenshoots"))
+                Directory.CreateDirectory($"{userProfile}\\QAFlow\\Screenshoots");
+            
+            
             if (doc.RootElement.TryGetProperty("SaveDirectories", out var saveDirectories))
             {
                 if (saveDirectories.TryGetProperty("VideoDir", out var videoDir))
                 {
-                    videoPath = videoDir.GetString() ?? string.Empty;
+                    // Replace the hardcoded "C:\\Users\\nicol" with the dynamic user profile path
+                    videoPath = videoDir.GetString()?.Replace("C:\\Users\\nicol", userProfile) ?? string.Empty;
                 }
-                    
+
                 if (saveDirectories.TryGetProperty("PictureDir", out var pictureDir))
                 {
-                    picturePath = pictureDir.GetString() ?? string.Empty;
+                    // Replace the hardcoded "C:\\Users\\nicol" with the dynamic user profile path
+                    picturePath = pictureDir.GetString()?.Replace("C:\\Users\\nicol", userProfile) ?? string.Empty;
                 }
             }
-                
+
             Logger.Information("Loaded from JSON - VideoDir: {VideoPath}, PictureDir: {PicturePath}", 
                 videoPath, picturePath);
         }
