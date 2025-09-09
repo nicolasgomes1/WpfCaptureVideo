@@ -69,6 +69,9 @@ public static class SettingsService
             if(!Directory.Exists($"{userProfile}\\QAFlow\\Screenshoots"))
                 Directory.CreateDirectory($"{userProfile}\\QAFlow\\Screenshoots");
             
+            if(!Directory.Exists($"{userProfile}\\QAFlow\\Logs"))
+                Directory.CreateDirectory($"{userProfile}\\QAFlow\\Logs");
+            
             
             if (doc.RootElement.TryGetProperty("SaveDirectories", out var saveDirectories))
             {

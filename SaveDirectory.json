@@ -2,9 +2,5 @@
   "SaveDirectories": {
     "VideoDir": "C:\\Users\\nicol\\QAFlow\\Videos",
     "PictureDir": "C:\\Users\\nicol\\QAFlow\\Screenshoots"
-  },
-  "ApiKey": {
-    "myApiKey": "Nicolas-465465-00000-6989658",
-    "myApiEndpoint": "https://localhost:6969"
   }
 }

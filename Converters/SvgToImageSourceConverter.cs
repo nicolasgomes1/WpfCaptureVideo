@@ -14,29 +14,26 @@ public class SvgToImageSourceConverter : IValueConverter
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (parameter is string path)
-        {
-            var uri = new Uri(path, UriKind.RelativeOrAbsolute);
-            var resourceStream = Application.GetResourceStream(uri);
-            if (resourceStream == null)
-                return null!;
+        if (parameter is not string path) return null!;
+        var uri = new Uri(path, UriKind.RelativeOrAbsolute);
+        var resourceStream = Application.GetResourceStream(uri);
+        if (resourceStream == null)
+            return null!;
 
-            using var stream = resourceStream.Stream;
-            var svg = new SKSvg();
-            svg.Load(stream);
+        using var stream = resourceStream.Stream;
+        var svg = new SKSvg();
+        svg.Load(stream);
 
-            var bitmap = new SKBitmap(Width, Height);
-            using var canvas = new SKCanvas(bitmap);
-            canvas.Clear(SKColors.Transparent);
-            canvas.DrawPicture(svg.Picture);
+        var bitmap = new SKBitmap(Width, Height);
+        using var canvas = new SKCanvas(bitmap);
+        canvas.Clear(SKColors.Transparent);
+        canvas.DrawPicture(svg.Picture);
 
-            return BitmapSource.Create(
-                bitmap.Width, bitmap.Height, 96, 96,
-                System.Windows.Media.PixelFormats.Bgra32,
-                null, bitmap.Bytes, bitmap.RowBytes);
-        }
+        return BitmapSource.Create(
+            bitmap.Width, bitmap.Height, 96, 96,
+            System.Windows.Media.PixelFormats.Bgra32,
+            null, bitmap.Bytes, bitmap.RowBytes);
 
-        return null!;
     }
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
 }

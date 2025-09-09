@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using WpfRecorder.Api;
 using WpfRecorder.ViewModels;
 
 namespace WpfRecorder;
@@ -21,7 +20,9 @@ public partial class App : Application
     
     public App()
     {
-        const string path = "C:\\Users\\nicol\\RiderProjects\\WpfRecorder\\Logs\\log-.txt";
+        string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        string path = $"{userProfile}\\QAFlow\\Logs\\log-.txt";
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
             .WriteTo.Console() // Optional: for console output
@@ -44,7 +45,6 @@ public partial class App : Application
         var mainWindow = new MainWindow();
         MainWindow = mainWindow; // Set the MainWindow property
         mainWindow.Show();
-        ConnectToApiData.ConnectToApiWithKey();
     }
     
     protected override async void OnExit(ExitEventArgs e)
