@@ -70,10 +70,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Logs\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Update="SaveDirectory.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
